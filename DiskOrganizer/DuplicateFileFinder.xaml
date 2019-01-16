@@ -55,8 +55,11 @@
 			BorderThickness="2"
 			Name="dffHashes"
 			Margin="20,65,400,60">
-			
-			
+
+
+
+
+
 		</ListBox>
 
 		<ListBox 
@@ -70,6 +73,7 @@
 		
 
 		<ProgressBar 
+			Maximum="100"
 			Name="dffProgress"
 			Margin="20,383,20,20"
 			

@@ -31,18 +31,27 @@ namespace DiskOrganizer
         {
             InitializeComponent();
 
+            path = @"C:\Users\MUA\Downloads";
+
             
-
-
-            DFF dFF= new DFF("D:\\models",dffProgress,this);
-            //DFF dFF= new DFF("D:\\models",dffProgress,this);
-            //Debug.WriteLine(dFF.GetDuplicates()) ;
-
-
-
 
         }
 
+        private void NewThread1()
+        {
+
+            DFF dff = new DFF(path, dffProgress, this);
+        }
+        private void NewThread2()
+        {
+            while(true)
+            {
+                this.Dispatcher.BeginInvoke(
+                    new Action(() => 
+                    this.dffProgress.Value = 50));
+                
+            }
+        }
 
         private void dffSelectLocation_Click(object sender, RoutedEventArgs e)
         {
@@ -74,6 +83,11 @@ namespace DiskOrganizer
         }
         private void dffStart_Click(object sender, RoutedEventArgs e)
         {
+
+            Thread t1 = new Thread(NewThread1);
+            t1.Start();
+            Thread t2 = new Thread(NewThread2);
+            t2.Start();
 
 
         }

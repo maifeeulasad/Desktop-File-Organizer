@@ -22,11 +22,16 @@ namespace DiskOrganizer
     public class DFF
     {
 
+        
+
         private Dictionary<string, List<string>> hashes;
         private Dictionary<string, List<string>> duplicateHashes;
 
         private long totalSize = 0;
         private long currentSize = 1;
+
+
+        public static float progress = 0;
 
 
         public DFF(string path, System.Windows.Controls.ProgressBar progressBar, Window window)
@@ -66,7 +71,7 @@ namespace DiskOrganizer
                 foreach (String location in locations)
                 {
 
-                    Console.WriteLine("          -------------   " + location);
+                    Console.WriteLine("!---" + location);
 
                 }
             }
@@ -93,7 +98,7 @@ namespace DiskOrganizer
                 foreach (String location in locations)
                 {
 
-                    Console.WriteLine("          ***************  " + location);
+                    Console.WriteLine("|***" + location);
 
                 }
 
@@ -202,11 +207,9 @@ namespace DiskOrganizer
                     currentSize += GetFileSize(file);
 
 
-                    window.Dispatcher.Invoke((Action)(() =>
-                    {
-                        progressBar.Value = (100 * currentSize) / totalSize;
-                    }));
+                    progress = (100 * currentSize) / totalSize;
 
+                    
 
 
 
