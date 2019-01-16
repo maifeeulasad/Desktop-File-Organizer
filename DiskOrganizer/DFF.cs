@@ -22,65 +22,94 @@ namespace DiskOrganizer
     public class DFF
     {
 
-        private static Dictionary<string, List<string>> hashes;// = new Dictionary<string, List<string>> { };
-        private static Dictionary<string, List<string>> duplicateHashes;// = new Dictionary<string, List<string>> { };
+        private Dictionary<string, List<string>> hashes;
+        private Dictionary<string, List<string>> duplicateHashes;
+
+        private long totalSize = 0;
+        private long currentSize = 1;
 
 
-        private static long totalSize = 0;
-        private static long currentSize = 1;
-        
-
-        public DFF(string path, System.Windows.Controls.ProgressBar progressBar,Window window)
+        public DFF(string path, System.Windows.Controls.ProgressBar progressBar, Window window)
         {
 
             hashes = new Dictionary<string, List<string>> { };
             duplicateHashes = new Dictionary<string, List<string>> { };
 
             totalSize = DirSize(path);
-            Travarse(path,progressBar,window);
-            //GetDuplicates();
+
+
+            Travarse(path, progressBar, window);
+            PrintResult();
+            GetOnlyDuplicates();
+            PrintDuplicates();
         }
 
-        
-        public static Dictionary<string, List<string>> GetDuplicates()
+
+        public Dictionary<string, List<string>> GetDuplicates()
         {
             return duplicateHashes;
         }
 
-        public static void PrintResult()
+        public void PrintResult()
         {
 
-            Debug.WriteLine("++++++++++++++++++++++++++++++");
-            foreach (string key in hashes.Keys)
+            Debug.WriteLine("-------------------------------");
+
+            Debug.WriteLine("\nGenuine\n");
+
+
+            foreach (KeyValuePair<String, List<String>> kvp in hashes)
             {
-                Debug.WriteLine(key);
-                
-                try
-                {
-                    List<string> xxx = duplicateHashes[key];
-                    foreach (string y in xxx)
-                    {
-                        Debug.WriteLine("---" + y);
-                    }
-                }
-                catch(Exception e)
+                List<String> locations = kvp.Value;
+                Console.WriteLine("\n" + kvp.Key + "\n");
+
+                foreach (String location in locations)
                 {
 
+                    Console.WriteLine("          -------------   " + location);
+
                 }
-                
-                
+            }
+            Debug.WriteLine("++++++++++++++++++++++++++++++");
+        }
+
+
+        public void PrintDuplicates()
+        {
+
+
+
+            Debug.WriteLine("-------------------------------");
+
+            Debug.WriteLine("\nDuplicates\n");
+
+            foreach (KeyValuePair<String, List<String>> kvp in duplicateHashes)
+
+            {
+
+                List<String> locations = kvp.Value;
+                Console.WriteLine("\n" + kvp.Key + "\n");
+
+                foreach (String location in locations)
+                {
+
+                    Console.WriteLine("          ***************  " + location);
+
+                }
+
+
             }
 
             Debug.WriteLine("++++++++++++++++++++++++++++++");
         }
 
 
-        private static long DirSize(string path)
+        private long DirSize(string path)
         {
             return DirSize(new DirectoryInfo(path));
         }
 
-        private static long DirSize(DirectoryInfo d)
+        private long DirSize(DirectoryInfo d)
         {
 
             long size = 0;
@@ -97,19 +126,19 @@ namespace DiskOrganizer
                     size += DirSize(di);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
             return size;
         }
 
-        private static string myCurrentKey = "";
+        private string myCurrentKey = "";
 
 
-        
 
-        private static void MoveIndex(int dir)
+
+        private void MoveIndex(int dir)
         {
 
             List<string> keys = new List<string>(duplicateHashes.Keys);
@@ -127,13 +156,13 @@ namespace DiskOrganizer
         }
 
 
-        private static long GetFileSize(string file)
+        private long GetFileSize(string file)
         {
 
             return new FileInfo(file).Length;
         }
 
-        private static void GetOnlyDuplicates()
+        private void GetOnlyDuplicates()
         {
             foreach (KeyValuePair<String, List<String>> kvp in hashes)
             {
@@ -143,15 +172,6 @@ namespace DiskOrganizer
                 {
 
                     List<String> locations = kvp.Value;
-                    Console.WriteLine("\n" + kvp.Key + "\n");
-
-                    foreach (String location in locations)
-                    {
-
-                        Console.WriteLine("          -------------   " + location);
-
-                    }
-
 
                     duplicateHashes[kvp.Key] = kvp.Value;
 
@@ -162,7 +182,7 @@ namespace DiskOrganizer
         }
 
 
-        private static void Travarse(string workingDirectory, System.Windows.Controls.ProgressBar progressBar,Window window)
+        private void Travarse(string workingDirectory, System.Windows.Controls.ProgressBar progressBar, Window window)
         {
             try
             {
@@ -196,8 +216,8 @@ namespace DiskOrganizer
                 foreach (string subDirectory in subDirectories)
                 {
 
-                    
-                    Travarse(subDirectory,progressBar,window);
+
+                    Travarse(subDirectory, progressBar, window);
                 }
             }
             catch (UnauthorizedAccessException uae)
@@ -208,80 +228,52 @@ namespace DiskOrganizer
 
         }
 
-
-        private static void CalculateMD5(string filename)
+        private void CalculateMD5(string filename)
         {
+
+
+
+
             using (var md5 = MD5.Create())
             {
                 using (var stream = File.OpenRead(filename))
                 {
                     var hash = md5.ComputeHash(stream);
 
-                    
+
 
                     string hashString = BitConverter.ToString(hash);
 
 
                     try
                     {
-                        Debug.WriteLine(hashString);
+                        //Debug.WriteLine(hashString);
                         hashes[hashString].Add(filename);
 
 
                     }
                     catch (NullReferenceException nre)
                     {
-                        Debug.WriteLine("^^^^^^^^^^^^^^null");
+                        //Debug.WriteLine("^^^^^^^^^^^^^^null");
                         hashes[hashString] = new List<string> { };
                         hashes[hashString].Add(filename);
                     }
                     catch (KeyNotFoundException knfe)
                     {
-                        Debug.WriteLine("^^^^^^^^^keyError");
+                        //Debug.WriteLine("^^^^^^^^^keyError");
+
                         hashes[hashString] = new List<string> { };
                         hashes[hashString].Add(filename);
 
-                        Debug.WriteLine("\n++++++++++++++++++++\n");
-                        /*
-                        try
-                        {
-                            List<string> xxx = hashes[hashString];
-                            foreach (string y in xxx)
-                            {
-                                Debug.WriteLine("---" + y);
-                            }
-                        }
-                        
-                        catch (Exception e)
-                        {
 
-                        }
 
-                        Debug.WriteLine("\n++++++++++++++++++++\n");
-                        */
                     }
 
-
-                    PrintResult();
-
-                    /*
-                    try
-                    {
-                        List<string> xxx = hashes[hashString];
-                        foreach (string y in xxx)
-                        {
-                            Debug.WriteLine("---" + y);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-
-                    }
-                    */
 
 
                 }
             }
+
         }
 
 
