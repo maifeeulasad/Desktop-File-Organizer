@@ -22,7 +22,7 @@ namespace DiskOrganizer
     public class DFF
     {
 
-        
+        public bool done = false;
 
         private Dictionary<string, List<string>> hashes;
         private Dictionary<string, List<string>> duplicateHashes;
@@ -36,6 +36,10 @@ namespace DiskOrganizer
 
         public DFF(string path, System.Windows.Controls.ProgressBar progressBar, Window window)
         {
+            totalSize = 1;
+            currentSize = 0;
+            progress=0;
+            done = false;
 
             hashes = new Dictionary<string, List<string>> { };
             duplicateHashes = new Dictionary<string, List<string>> { };
@@ -44,6 +48,7 @@ namespace DiskOrganizer
 
 
             Travarse(path, progressBar, window);
+            done = true;
             PrintResult();
             GetOnlyDuplicates();
             PrintDuplicates();

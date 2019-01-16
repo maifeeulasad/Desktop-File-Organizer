@@ -25,7 +25,9 @@ namespace DiskOrganizer
         
         public static string path;
 
-        
+        public static Window window;
+
+        public static DFF dff;
 
         public DuplicateFileFinder()
         {
@@ -33,22 +35,35 @@ namespace DiskOrganizer
 
             path = @"C:\Users\MUA\Downloads";
 
-            
+            window = this;
 
         }
 
         private void NewThread1()
         {
 
-            DFF dff = new DFF(path, dffProgress, this);
+            dff = new DFF(path, dffProgress, this);
         }
         private void NewThread2()
         {
+
             while(true)
             {
-                this.Dispatcher.BeginInvoke(
-                    new Action(() => 
-                    this.dffProgress.Value = 50));
+
+                window.Dispatcher.Invoke(
+                    new Action(() =>
+                    this.dffProgress.Value = DFF.progress));
+                try
+                {
+                    if (dff.done)
+                    {
+                        return;
+                    }
+                }
+                catch(Exception e)
+                {
+
+                }
                 
             }
         }
