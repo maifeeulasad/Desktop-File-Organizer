@@ -56,7 +56,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomFeatures.cs" />
+    <Compile Include="DFF.cs" />
+    <Compile Include="DuplicateFileFinder.xaml.cs">
+      <DependentUpon>DuplicateFileFinder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Util.cs" />
+    <Page Include="DuplicateFileFinder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

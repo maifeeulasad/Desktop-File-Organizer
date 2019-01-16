@@ -8,8 +8,64 @@ using System.Threading.Tasks;
 
 namespace DiskOrganizer
 {
-    class Util
+    public class Util
     {
+        
+
+
+        public static string GetExtension(string x)
+        {
+            x= x.Substring(x.LastIndexOf("\\") + 1);
+            if (!x.Contains("."))
+            {
+                return x;
+            }
+
+            return x.Substring(x.LastIndexOf(".") + 1);
+        }
+
+        /*
+        public static bool IsCustomProjectDirectory(string path,CustomFeatures customFeatures)
+        {
+            string[] files = Directory.GetFiles(path);
+            foreach (string x in files)
+            {
+                string extension=x.Substring()
+                if (x.EndsWith("."+))
+                    return true;
+                    
+            }
+
+
+            return false;
+        }
+        */
+
+
+        public static bool IsIntelliJProjectDirectory(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            foreach(string x in files)
+            {
+                if (x.EndsWith(".iml"))
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool IsAndroidStudioDirectory(string path)
+        {
+            string[] files = Directory.GetFiles(path);
+            foreach (string x in files)
+            {
+                if (x.EndsWith(".gradle"))
+                    return true;
+            }
+            return false;
+        }
+
+
+
         private static Random random = new Random();
         public static string RandomString(int length)
         {
@@ -19,6 +75,51 @@ namespace DiskOrganizer
         }
 
         public static string sName = "dosmua";
+
+
+        public static string NewFileName(string x,int cou)
+        {
+            if(x.Contains("."))
+            {
+                x = x.Replace(".", " - " + cou.ToString() + ".");
+            }
+            else
+            {
+                x += " - " + cou.ToString();
+            }
+            return x;
+        }
+
+
+        public static string GetFileName(string path)
+        {
+            return path.Substring(path.LastIndexOf("\\") + 1);
+        }
+
+        
+        public static string GetDirectory(string path)
+        {
+            return path.Substring(0,path.IndexOf(':')-1);
+        }
+
+
+        public static void MoveFileSafe(string path,string targetDirectory)
+        {
+            int cou = 0;
+            if(File.Exists(targetDirectory+"\\"+GetFileName(path)))
+            {
+                string fName = GetFileName(path);
+                while (File.Exists(targetDirectory + "\\" + NewFileName(fName,++cou)))
+                {
+
+                }
+                File.Move(path, targetDirectory + "\\" + NewFileName(GetFileName(path), cou));
+            }
+            else
+            {
+                File.Move(path, targetDirectory + "\\" + GetFileName(path));
+            }
+        }
 
         public static void moveFile(string path)
         {
@@ -94,6 +195,15 @@ namespace DiskOrganizer
                 CreateDirectory(p);
             }
         }
+
+
+        public static string[] x(string theText)
+        {
+            return theText.Split(
+                new[] { Environment.NewLine },
+                StringSplitOptions.None
+            );
+        }
         
 
 
@@ -116,7 +226,9 @@ namespace DiskOrganizer
                         {
 
                             Debug.WriteLine(x);
-                            moveFile(x);
+                            
+
+                            //moveFile(x);
                             //moveFile(x, x + "\\dosmua\\" + type);
 
                             //File.Move(x, path + "\\dosmua\\" + type);

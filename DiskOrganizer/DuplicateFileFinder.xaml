@@ -1,0 +1,80 @@
+﻿<Window x:Class="DiskOrganizer.DuplicateFileFinder"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DiskOrganizer"
+        mc:Ignorable="d"
+        ResizeMode="NoResize"
+		Title="Duplicate File Finder" 
+		Height="450" 
+		Width="800">
+
+	<Grid>
+
+		<Button
+			Name="dffSelectLocation"
+			Click="dffSelectLocation_Click"
+			Content="Select Location"
+			Margin="20,20,640,370"
+			></Button>
+		
+
+		<TextBlock
+			Name="dffLocation"
+			Margin="175,20,435,370"
+			Background="Aqua"
+			></TextBlock>
+
+
+		<Button
+			Name="dffStart"
+			Content="Start"
+			Click="dffStart_Click"
+			Foreground="Green"
+			Margin="385,20,300,370"
+			></Button>
+
+		<Button
+			Name="dffDeleteSelected"
+			Content="Delete Selected"
+			Foreground="Red"
+			Margin="530,20,160,370"
+			></Button>
+
+		<Button
+			Name="dffDeleteAll"
+			Foreground="White"
+			Background="Red"
+			Content="Delete All"
+			Margin="673,20,20,370"
+			></Button>
+
+
+		<ListBox 
+			BorderThickness="2"
+			Name="dffHashes"
+			Margin="20,65,400,60">
+			
+			
+		</ListBox>
+
+		<ListBox 
+			BorderThickness="2"
+			Name="dffHashFiles"
+			Margin="400,65,20,60"
+			
+			></ListBox>
+
+
+		
+
+		<ProgressBar 
+			Name="dffProgress"
+			Margin="20,383,20,20"
+			
+			></ProgressBar>
+
+	</Grid>
+
+</Window>

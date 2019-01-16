@@ -25,11 +25,24 @@ namespace DiskOrganizer
     {
         public MainWindow()
         {
-            InitializeComponent();
-            
+            //InitializeComponent();
+
+
+            DuplicateFileFinder d = new DuplicateFileFinder();
+            d.Show();
+
+
+            /*
+
+
+            Util.MoveFileSafe(@"C:\Users\MUA\Music\videoplayback.mp4",
+                @"C:\Users\MUA\Music\MEmu Music");
+            Util.MoveFileSafe(@"C:\Users\MUA\Music\Tumi Jano Na Song  X Girlfriend Bangla Natok Song 2019  Afran Nisho & Tanjin Tisha.mp3",
+                @"C:\Users\MUA\Music\MEmu Music");
+            */
         }
 
-
+        /*
         private void start_Click(object sender,RoutedEventArgs e)
         {
 
@@ -65,6 +78,7 @@ namespace DiskOrganizer
 
             }
         }
+        */
 
     }
 }
