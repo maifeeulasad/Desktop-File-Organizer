@@ -42,7 +42,7 @@ namespace DiskOrganizer
         private void NewThread1()
         {
 
-            dff = new DFF(path, dffProgress, this);
+            dff = new DFF(path);
         }
         private void NewThread2()
         {
@@ -53,6 +53,9 @@ namespace DiskOrganizer
                 window.Dispatcher.Invoke(
                     new Action(() =>
                     this.dffProgress.Value = DFF.progress));
+                window.Dispatcher.Invoke(
+                    new Action(() =>
+                    this.dffDetails.Text = DFF.currentPath));
                 try
                 {
                     if (dff.done)

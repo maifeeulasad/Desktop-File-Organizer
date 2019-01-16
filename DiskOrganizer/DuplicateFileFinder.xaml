@@ -70,12 +70,17 @@
 			></ListBox>
 
 
-		
+		<TextBlock
+			Name="dffDetails"
+			FontSize="8"
+			Margin="20,365,20,35"
+			
+			></TextBlock>
 
 		<ProgressBar 
 			Maximum="100"
 			Name="dffProgress"
-			Margin="20,383,20,20"
+			Margin="20,385,20,20"
 			
 			></ProgressBar>
 

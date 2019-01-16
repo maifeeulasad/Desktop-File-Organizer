@@ -27,18 +27,27 @@ namespace DiskOrganizer
         private Dictionary<string, List<string>> hashes;
         private Dictionary<string, List<string>> duplicateHashes;
 
+        public Dictionary<string, List<string>> GetDuplicates()
+        {
+            return duplicateHashes;
+        }
+
+
         private long totalSize = 0;
         private long currentSize = 1;
 
 
         public static float progress = 0;
+        public static string currentPath = "";
 
 
-        public DFF(string path, System.Windows.Controls.ProgressBar progressBar, Window window)
+        public void PerformOperation(string path)
         {
+
+            currentPath = "";
             totalSize = 1;
             currentSize = 0;
-            progress=0;
+            progress = 0;
             done = false;
 
             hashes = new Dictionary<string, List<string>> { };
@@ -47,11 +56,16 @@ namespace DiskOrganizer
             totalSize = DirSize(path);
 
 
-            Travarse(path, progressBar, window);
+            Travarse(path);
             done = true;
             PrintResult();
             GetOnlyDuplicates();
             PrintDuplicates();
+        }
+
+        public DFF(string path)
+        {
+            PerformOperation(path);
         }
 
 
@@ -192,7 +206,7 @@ namespace DiskOrganizer
         }
 
 
-        private void Travarse(string workingDirectory, System.Windows.Controls.ProgressBar progressBar, Window window)
+        private void Travarse(string workingDirectory)
         {
             try
             {
@@ -204,7 +218,7 @@ namespace DiskOrganizer
                 foreach (string file in files)
                 {
 
-
+                    currentPath = file;
                     CalculateMD5(file);
 
                     Debug.WriteLine(file);
@@ -225,7 +239,7 @@ namespace DiskOrganizer
                 {
 
 
-                    Travarse(subDirectory, progressBar, window);
+                    Travarse(subDirectory);
                 }
             }
             catch (UnauthorizedAccessException uae)
