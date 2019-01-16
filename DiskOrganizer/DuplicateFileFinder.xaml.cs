@@ -34,10 +34,11 @@ namespace DiskOrganizer
             
 
 
-            DFF dFF= new DFF("D:\\models\\",dffProgress,this);
+            DFF dFF= new DFF("D:\\models\\car",dffProgress,this);
+            DFF.PrintResult();
+            //DFF dFF= new DFF("D:\\models",dffProgress,this);
             //Debug.WriteLine(dFF.GetDuplicates()) ;
 
-            //dFF.PrintResult();
 
 
 

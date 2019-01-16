@@ -21,44 +21,66 @@ namespace DiskOrganizer
 {
     public class DFF
     {
-        private long totalSize = 0;
-        private long currentSize = 1;
+
+        private static Dictionary<string, List<string>> hashes;// = new Dictionary<string, List<string>> { };
+        private static Dictionary<string, List<string>> duplicateHashes;// = new Dictionary<string, List<string>> { };
+
+
+        private static long totalSize = 0;
+        private static long currentSize = 1;
         
 
         public DFF(string path, System.Windows.Controls.ProgressBar progressBar,Window window)
         {
+
+            hashes = new Dictionary<string, List<string>> { };
+            duplicateHashes = new Dictionary<string, List<string>> { };
+
             totalSize = DirSize(path);
             Travarse(path,progressBar,window);
+            //GetDuplicates();
         }
 
         
-        public Dictionary<string, List<string>> GetDuplicates()
+        public static Dictionary<string, List<string>> GetDuplicates()
         {
             return duplicateHashes;
         }
 
-        public void PrintResult()
+        public static void PrintResult()
         {
 
-            foreach(string key in duplicateHashes.Keys)
+            Debug.WriteLine("++++++++++++++++++++++++++++++");
+            foreach (string key in hashes.Keys)
             {
-                Debug.WriteLine(key+"\n-----------\n");
-                foreach(string y in duplicateHashes[key])
+                Debug.WriteLine(key);
+                
+                try
                 {
-                    Debug.WriteLine("---" + y);
+                    List<string> xxx = duplicateHashes[key];
+                    foreach (string y in xxx)
+                    {
+                        Debug.WriteLine("---" + y);
+                    }
                 }
+                catch(Exception e)
+                {
+
+                }
+                
                 
             }
 
+            Debug.WriteLine("++++++++++++++++++++++++++++++");
         }
 
 
-        private long DirSize(string path)
+        private static long DirSize(string path)
         {
             return DirSize(new DirectoryInfo(path));
         }
 
-        private long DirSize(DirectoryInfo d)
+        private static long DirSize(DirectoryInfo d)
         {
 
             long size = 0;
@@ -82,14 +104,12 @@ namespace DiskOrganizer
             return size;
         }
 
-        private string myCurrentKey = "";
+        private static string myCurrentKey = "";
 
 
-        private Dictionary<string, List<string>> hashes = new Dictionary<string, List<string>> { };
-        private Dictionary<string, List<string>> duplicateHashes = new Dictionary<string, List<string>> { };
+        
 
-
-        private void MoveIndex(int dir)
+        private static void MoveIndex(int dir)
         {
 
             List<string> keys = new List<string>(duplicateHashes.Keys);
@@ -107,13 +127,42 @@ namespace DiskOrganizer
         }
 
 
-        private long GetFileSize(string file)
+        private static long GetFileSize(string file)
         {
 
-            return new System.IO.FileInfo(file).Length;
+            return new FileInfo(file).Length;
         }
 
-        private void Travarse(string workingDirectory, System.Windows.Controls.ProgressBar progressBar,Window window)
+        private static void GetOnlyDuplicates()
+        {
+            foreach (KeyValuePair<String, List<String>> kvp in hashes)
+            {
+
+
+                if (kvp.Value.Count > 1)
+                {
+
+                    List<String> locations = kvp.Value;
+                    Console.WriteLine("\n" + kvp.Key + "\n");
+
+                    foreach (String location in locations)
+                    {
+
+                        Console.WriteLine("          -------------   " + location);
+
+                    }
+
+
+                    duplicateHashes[kvp.Key] = kvp.Value;
+
+                }
+
+
+            }
+        }
+
+
+        private static void Travarse(string workingDirectory, System.Windows.Controls.ProgressBar progressBar,Window window)
         {
             try
             {
@@ -128,12 +177,14 @@ namespace DiskOrganizer
 
                     CalculateMD5(file);
 
+                    Debug.WriteLine(file);
+
                     currentSize += GetFileSize(file);
 
 
                     window.Dispatcher.Invoke((Action)(() =>
                     {
-                        progressBar.Value = 50;
+                        progressBar.Value = (100 * currentSize) / totalSize;
                     }));
 
 
@@ -158,7 +209,7 @@ namespace DiskOrganizer
         }
 
 
-        string CalculateMD5(string filename)
+        private static void CalculateMD5(string filename)
         {
             using (var md5 = MD5.Create())
             {
@@ -168,28 +219,65 @@ namespace DiskOrganizer
 
                     
 
-                    string hashstring = BitConverter.ToString(hash);
+                    string hashString = BitConverter.ToString(hash);
 
 
                     try
                     {
-                        hashes[hashstring].Add(filename);
+                        Debug.WriteLine(hashString);
+                        hashes[hashString].Add(filename);
 
 
                     }
                     catch (NullReferenceException nre)
                     {
-                        hashes[hashstring] = new List<string> { };
-                        hashes[hashstring].Add(filename);
+                        Debug.WriteLine("^^^^^^^^^^^^^^null");
+                        hashes[hashString] = new List<string> { };
+                        hashes[hashString].Add(filename);
                     }
                     catch (KeyNotFoundException knfe)
                     {
+                        Debug.WriteLine("^^^^^^^^^keyError");
+                        hashes[hashString] = new List<string> { };
+                        hashes[hashString].Add(filename);
 
-                        hashes[hashstring] = new List<string> { };
-                        hashes[hashstring].Add(filename);
+                        Debug.WriteLine("\n++++++++++++++++++++\n");
+                        /*
+                        try
+                        {
+                            List<string> xxx = hashes[hashString];
+                            foreach (string y in xxx)
+                            {
+                                Debug.WriteLine("---" + y);
+                            }
+                        }
+                        
+                        catch (Exception e)
+                        {
+
+                        }
+
+                        Debug.WriteLine("\n++++++++++++++++++++\n");
+                        */
                     }
 
-                    return hashstring;
+
+                    PrintResult();
+
+                    /*
+                    try
+                    {
+                        List<string> xxx = hashes[hashString];
+                        foreach (string y in xxx)
+                        {
+                            Debug.WriteLine("---" + y);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                    */
 
 
                 }
