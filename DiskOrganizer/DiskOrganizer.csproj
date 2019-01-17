@@ -61,6 +61,7 @@
     <Compile Include="DuplicateFileFinder.xaml.cs">
       <DependentUpon>DuplicateFileFinder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="HashDetails.cs" />
     <Compile Include="Util.cs" />
     <Page Include="DuplicateFileFinder.xaml">
       <SubType>Designer</SubType>

@@ -33,11 +33,25 @@ namespace DiskOrganizer
         {
             InitializeComponent();
 
-            path = @"C:\Users\MUA\Downloads";
+            //path = @"C:\Users\MUA\Downloads";
+
+            path = @"D:\models";
 
             window = this;
 
         }
+
+        private void ShowDuplicatesThread()
+        {
+            Dictionary<string, List<string>> tem = dff.GetDuplicates();
+            foreach(string keys in tem.Keys)
+            {
+                window.Dispatcher.Invoke(
+                    new Action(() =>
+                    this.dffHashes.Items.Add(new HashDetails { Hash = keys })));
+            }
+        }
+
 
         private void NewThread1()
         {
@@ -60,12 +74,21 @@ namespace DiskOrganizer
                 {
                     if (dff.done)
                     {
+                        DFF.currentPath = "Done ! " + dff.GetDuplicates().Count+ " set of duplicates found";
+                        DFF.progress = 0;
+                        window.Dispatcher.Invoke(
+                            new Action(() =>
+                            this.dffProgress.Value = DFF.progress));
+                        window.Dispatcher.Invoke(
+                            new Action(() =>
+                            this.dffDetails.Text = DFF.currentPath));
+                        ShowDuplicatesThread();
                         return;
                     }
                 }
                 catch(Exception e)
                 {
-
+                    Debug.WriteLine("ignore" + e.ToString());
                 }
                 
             }
@@ -107,6 +130,21 @@ namespace DiskOrganizer
             Thread t2 = new Thread(NewThread2);
             t2.Start();
 
+
+        }
+
+        private void ShowHashDetails(object sender, MouseButtonEventArgs e)
+        {
+
+            var itemHS = ((System.Windows.Controls.ListViewItem)sender).Content 
+                as HashDetails;
+            var itemLV = sender as System.Windows.Controls.ListViewItem;
+            if (itemLV != null && itemLV.IsSelected)
+            {
+
+
+                //Debug.WriteLine(itemHS.Hash);
+            }
 
         }
     }

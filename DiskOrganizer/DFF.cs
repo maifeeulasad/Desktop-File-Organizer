@@ -58,9 +58,9 @@ namespace DiskOrganizer
 
             Travarse(path);
             done = true;
-            PrintResult();
+            //PrintResult();
             GetOnlyDuplicates();
-            PrintDuplicates();
+            //PrintDuplicates();
         }
 
         public DFF(string path)
@@ -68,11 +68,7 @@ namespace DiskOrganizer
             PerformOperation(path);
         }
 
-
-        public Dictionary<string, List<string>> GetDuplicates()
-        {
-            return duplicateHashes;
-        }
+        
 
         public void PrintResult()
         {

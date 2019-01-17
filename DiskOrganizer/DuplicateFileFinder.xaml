@@ -51,23 +51,39 @@
 			></Button>
 
 
-		<ListBox 
-			BorderThickness="2"
-			Name="dffHashes"
-			Margin="20,65,400,60">
 
 
 
+		<ListView  Margin="20,65,400,60" BorderThickness="2" Name="dffHashes">
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Width="350" Header="Hash" DisplayMemberBinding="{Binding Hash}"/>
+				</GridView>
+			</ListView.View>
+
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<EventSetter Event="PreviewMouseLeftButtonDown" Handler="ShowHashDetails" />
+				</Style>
+			</ListView.ItemContainerStyle>
+
+		</ListView>
 
 
-		</ListBox>
-
-		<ListBox 
+		<ListView 
 			BorderThickness="2"
 			Name="dffHashFiles"
 			Margin="400,65,20,60"
 			
-			></ListBox>
+			>
+
+			<ListView.View>
+				<GridView>
+					<GridViewColumn Width="350" Header="File Location" DisplayMemberBinding="{Binding Location}"/>
+				</GridView>
+			</ListView.View>
+
+		</ListView>
 
 
 		<TextBlock
