@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 
 namespace DiskOrganizer
 {
@@ -96,6 +98,12 @@ namespace DiskOrganizer
             }
         }
 
+
+        private void dffDeleteSelected_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
         private void dffSelectLocation_Click(object sender, RoutedEventArgs e)
         {
             FolderBrowserDialog dlg = new FolderBrowserDialog();
@@ -114,16 +122,8 @@ namespace DiskOrganizer
             }
 
         }
-        private void dffDeleteSelected_Click(object sender, RoutedEventArgs e)
-        {
-
-
-        }
-        private void dffDeleteAll_Click(object sender, RoutedEventArgs e)
-        {
-
-
-        }
+        
+       
         private void dffStart_Click(object sender, RoutedEventArgs e)
         {
 
@@ -144,13 +144,13 @@ namespace DiskOrganizer
             if (itemLV != null && itemLV.IsSelected)
             {
                 ShowDuplicatesLocationsThread(itemHS.Hash);
-
                 
-
-                //Debug.WriteLine(itemHS.Hash);
             }
 
         }
+
+
+        
 
 
 
@@ -169,6 +169,57 @@ namespace DiskOrganizer
                     this.dffHashFiles.Items.Add(new HashLocations { Location = y })));
 
             }
+        }
+
+
+        private void dffDeleteAll_Click(object sender, RoutedEventArgs e)
+        {
+            //Debug.WriteLine("delete all");
+            try
+            {
+                foreach (KeyValuePair<String, List<String>> kvp in tem)
+                {
+                    PartialDeletation(kvp);
+
+
+                    
+                }
+
+            }
+            catch (Exception exx)
+            {
+
+            }
+        }
+
+
+        private void PartialDeletation(KeyValuePair<String, List<String>> kvp)
+        {
+            try
+            {
+                List<String> locations = kvp.Value;
+
+                int len = locations.Count;
+
+                if (len < 2)
+                {
+                    return;
+                }
+                else
+                {
+
+                    for (int i = 1; i < len; i++)
+                    {
+                        //Debug.WriteLine("deleting ---" + locations.ElementAt(i));
+                        File.Delete(locations.ElementAt(i));
+                    }
+                }
+            }
+            catch(Exception ex1)
+            {
+
+            }
+            
         }
 
 

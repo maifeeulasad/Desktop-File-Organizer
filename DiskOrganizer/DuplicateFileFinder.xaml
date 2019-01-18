@@ -40,6 +40,7 @@
 			Content="Delete Selected"
 			Foreground="Red"
 			Margin="530,20,160,370"
+			Click="dffDeleteSelected_Click"
 			></Button>
 
 		<Button
@@ -48,6 +49,7 @@
 			Background="Red"
 			Content="Delete All"
 			Margin="673,20,20,370"
+			Click="dffDeleteAll_Click"
 			></Button>
 
 

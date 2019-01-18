@@ -27,10 +27,10 @@ namespace DiskOrganizer
         {
             //InitializeComponent();
 
-
             DuplicateFileFinder d = new DuplicateFileFinder();
             d.Show();
 
+            this.Close();
 
             /*
 

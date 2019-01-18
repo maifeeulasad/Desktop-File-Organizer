@@ -37,7 +37,7 @@ namespace DiskOrganizer
         private long currentSize = 1;
 
 
-        public static float progress = 0;
+        public static int progress = 0;
         public static string currentPath = "";
 
 
@@ -222,7 +222,7 @@ namespace DiskOrganizer
                     currentSize += GetFileSize(file);
 
 
-                    progress = (100 * currentSize) / totalSize;
+                    progress = (int)((100 * currentSize) / totalSize);
 
                     
 

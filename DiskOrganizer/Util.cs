@@ -5,12 +5,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace DiskOrganizer
 {
     public class Util
     {
-        
+        public static void SetProgressBarValue(MainWindow window,ProgressBar progressBar,float value)
+        {
+
+            window.Dispatcher.Invoke(
+                new Action(() =>
+                progressBar.Value = value));
+        }
 
 
         public static string GetExtension(string x)
