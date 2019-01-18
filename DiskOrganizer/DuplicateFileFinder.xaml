@@ -79,9 +79,12 @@
 
 			<ListView.View>
 				<GridView>
-					<GridViewColumn Width="350" Header="File Location" DisplayMemberBinding="{Binding Location}"/>
+					<GridViewColumn Width="350" Header="File Locations" DisplayMemberBinding="{Binding Location}"/>
 				</GridView>
 			</ListView.View>
+
+
+
 
 		</ListView>
 

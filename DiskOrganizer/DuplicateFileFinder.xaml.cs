@@ -22,7 +22,9 @@ namespace DiskOrganizer
     /// </summary>
     public partial class DuplicateFileFinder : Window
     {
-        
+
+        Dictionary<string, List<string>> tem;
+
         public static string path;
 
         public static Window window;
@@ -43,7 +45,7 @@ namespace DiskOrganizer
 
         private void ShowDuplicatesThread()
         {
-            Dictionary<string, List<string>> tem = dff.GetDuplicates();
+            tem = dff.GetDuplicates();
             foreach(string keys in tem.Keys)
             {
                 window.Dispatcher.Invoke(
@@ -141,11 +143,36 @@ namespace DiskOrganizer
             var itemLV = sender as System.Windows.Controls.ListViewItem;
             if (itemLV != null && itemLV.IsSelected)
             {
+                ShowDuplicatesLocationsThread(itemHS.Hash);
 
+                
 
                 //Debug.WriteLine(itemHS.Hash);
             }
 
         }
+
+
+
+        private void ShowDuplicatesLocationsThread(string key)
+        {
+            window.Dispatcher.Invoke(
+                new Action(() =>
+                this.dffHashFiles.Items.Clear()));
+
+
+            List<string> x = tem[key];
+            foreach (string y in x)
+            {
+                window.Dispatcher.Invoke(
+                    new Action(() =>
+                    this.dffHashFiles.Items.Add(new HashLocations { Location = y })));
+
+            }
+        }
+
+
+
+
     }
 }
